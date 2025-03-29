@@ -1,7 +1,7 @@
 package pk.ajneb97.managers;
 
+import com.vanguardfactions.esssentials.player.inventory.PlayerInventoryService;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -301,9 +301,9 @@ public class KitsManager {
         sendKitActions(kit.getClaimActions(),player,true);
 
         //Give kit items
+        final List<ItemStack> itemsToGive = new ArrayList<>();
         for(KitItem kitItem : items){
             ItemStack item = kitItemManager.createItemFromKitItem(kitItem,player);
-
             if(itemHelmet != null && kitItem.equals(itemHelmet)){
                 playerInventory.setHelmet(item);
             }else if(itemChestplate != null && kitItem.equals(itemChestplate)){
@@ -315,13 +315,11 @@ public class KitsManager {
             }else if(itemOffhand != null && kitItem.equals(itemOffhand)){
                 playerInventory.setItemInOffHand(item);
             }else{
-                if(playerInventory.firstEmpty() == -1 && dropItemsIfFullInventory){
-                    player.getWorld().dropItemNaturally(player.getLocation(), item);
-                }else{
-                    playerInventory.addItem(item);
-                }
+                itemsToGive.add(item);
             }
         }
+
+        PlayerInventoryService.get().addItems(player, itemsToGive);
 
         //Actions after
         sendKitActions(kit.getClaimActions(),player,false);

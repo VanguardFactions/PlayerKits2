@@ -2,6 +2,7 @@ main: pk.ajneb97.PlayerKits2
 version: 1.17.1
 name: PlayerKits2
 api-version: 1.13
+depend: [VanguardEssentials]
 softdepend: [Vault,PlaceholderAPI]
 author: Ajneb97
 
